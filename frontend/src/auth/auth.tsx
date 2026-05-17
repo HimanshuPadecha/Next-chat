@@ -61,8 +61,8 @@ const Auth = ({ usecase }: authprops) => {
           return;
         }
         const formData = new FormData();
-        formData.append("username", data.username);
-        formData.append("password", data.password);
+        formData.append("username", data.username.trim());
+        formData.append("password", data.password.trim());
         if (data.profileImg) {
           formData.append("profileImg", data.profileImg);
         }
