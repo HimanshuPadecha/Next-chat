@@ -6,6 +6,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import App from "./App.tsx";
 import Auth from "./auth/auth.tsx";
 import AuthLayout from "./auth/layout.tsx";
@@ -42,6 +43,12 @@ const router = createBrowserRouter(
 createRoot(document.getElementById("root")!).render(
   <>
     <RouterProvider router={router} />
-    <ToastContainer />
+    <ToastContainer 
+      theme="dark"
+      position="bottom-right"
+      toastClassName="bg-black/60 backdrop-blur-xl shadow-2xl rounded-xl border border-white/10 mb-4 mx-4"
+      bodyClassName="text-white/90 text-sm font-medium tracking-wide"
+      hideProgressBar
+    />
   </>
 );

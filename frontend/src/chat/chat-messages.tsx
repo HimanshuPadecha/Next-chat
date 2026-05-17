@@ -9,9 +9,9 @@ import { cn } from "@/lib/utils";
 import { AxiosErrorHandler } from "@/utils/axios.error.handler";
 import { getMessages } from "@/utils/requests";
 import type { AxiosResponse } from "axios";
-import { Loader2Icon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Skeleton } from "@/components/ui/loader";
 
 const ChatMessages = () => {
   const { id } = useParams();
@@ -87,49 +87,51 @@ const ChatMessages = () => {
 
   if (loading) {
     return (
-      <div className="flex-1 flex items-center justify-center min-h-screen">
-        <div className="flex flex-col items-center justify-center">
-          <Loader2Icon className="animate-spin size-7" />
-          <span>Loading Messages...</span>
-        </div>
+      <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-4">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div key={i} className={cn("flex w-full", i % 2 === 0 ? "justify-end" : "justify-start")}>
+            <Skeleton className={cn("h-12 w-[60%] rounded-xl", i % 2 === 0 ? "rounded-br-sm bg-primary/20" : "rounded-bl-sm")} />
+          </div>
+        ))}
       </div>
     );
   }
   if (!messages) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-black min-h-screen">
-        <span className="text-white">No messages found</span>
+      <div className="flex-1 flex items-center justify-center">
+        <span className="text-white/40">Start a conversation</span>
       </div>
     );
   }
 
   return (
     <div
-      className="overflow-y-auto py-16 max-h-screen flex flex-col gap-2 min-h-screen px-4"
+      className="flex-1 overflow-y-auto p-6 flex flex-col gap-4 custom-scrollbar"
       ref={messageDivRef}
     >
-      {messages.map((message) => (
-        <div
-          key={message.id}
-          className={cn(
-            "flex w-full",
-            userContext.user && userContext.user.id === message.sender.id
-              ? "justify-end"
-              : "justify-start"
-          )}
-        >
-          <span
+      {messages.map((message) => {
+        const isSentByMe = userContext.user && userContext.user.id === message.sender.id;
+        return (
+          <div
+            key={message.id}
             className={cn(
-              "bg-black text-white px-3 py-2 rounded-lg max-w-xs break-words",
-              userContext.user && userContext.user.id === message.sender.id
-                ? "rounded-br-sm"
-                : "rounded-bl-sm"
+              "flex w-full animate-in fade-in slide-in-from-bottom-2 duration-300",
+              isSentByMe ? "justify-end" : "justify-start"
             )}
           >
-            {message.content}
-          </span>
-        </div>
-      ))}
+            <div
+              className={cn(
+                "px-4 py-2.5 max-w-[70%] break-words shadow-md transition-all hover:shadow-lg",
+                isSentByMe
+                  ? "bg-gradient-to-br from-primary to-blue-600 text-white rounded-2xl rounded-tr-sm"
+                  : "bg-white/10 backdrop-blur-md text-white/90 border border-white/5 rounded-2xl rounded-tl-sm"
+              )}
+            >
+              {message.content}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };

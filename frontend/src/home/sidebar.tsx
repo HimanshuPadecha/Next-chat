@@ -85,46 +85,52 @@ const Sidebar = ({ users }: sidebarprops) => {
   // const [users, setUsers] = useState<userInterface[] | null>(null);
 
   return (
-    <div className="w-72 flex flex-col min-h-screen max-h-screen p-3 overflow-y-scroll">
+    <div className="w-80 flex flex-col h-full py-4 px-3 overflow-y-auto border-r border-white/10 z-10 bg-black/20 backdrop-blur-sm shadow-xl">
       {/* user info */}
-      <div className="flex items-center justify-between">
-        <UserDisplay user={user} status="online" />
+      <div className="flex items-center justify-between mb-6 px-2">
+        <UserDisplay user={user} status="online" isCurrentUser />
         <Button
           onClick={logoutuser}
           disabled={loading}
-          className="flex items-center justify-center"
+          variant="destructive"
+          size="sm"
+          className="flex items-center justify-center shadow-lg hover:shadow-red-500/20 transition-all rounded-full px-4"
         >
-          {loading ? <Loader2Icon className="animate-spin" /> : "Logout"}
+          {loading ? <Loader2Icon className="animate-spin size-4 mr-2" /> : null}
+          {loading ? "..." : "Logout"}
         </Button>
       </div>
-      <div className="flex items-center gap-2 px-5">
+      
+      <div className="flex items-center gap-2 px-2 mb-4">
         <Badge
           onClick={() => SetSelectedMode("all")}
           variant={selectedMode === "all" ? "default" : "outline"}
-          className="cursor-pointer"
+          className={cn("cursor-pointer transition-all", selectedMode === "all" ? "bg-primary text-primary-foreground shadow-[0_0_10px_rgba(var(--primary),0.5)]" : "hover:bg-white/10")}
         >
           All {users?.length}
         </Badge>
         <Badge
           onClick={() => SetSelectedMode("online")}
           variant={selectedMode === "online" ? "default" : "outline"}
-          className="cursor-pointer"
+          className={cn("cursor-pointer transition-all", selectedMode === "online" ? "bg-primary text-primary-foreground shadow-[0_0_10px_rgba(var(--primary),0.5)]" : "hover:bg-white/10")}
         >
           Online {onlineusers?.length}
         </Badge>
       </div>
 
-      {selectedMode === "all"
-        ? users?.map((user) => (
-            <UserDisplay
-              user={user}
-              key={user.id}
-              status={onlineusers?.includes(user) ? "online" : "offline"}
-            />
-          ))
-        : onlineusers?.map((user) => (
-            <UserDisplay user={user} key={user.id} status="online" />
-          ))}
+      <div className="flex-1 overflow-y-auto space-y-1 px-1 custom-scrollbar">
+        {selectedMode === "all"
+          ? users?.map((user) => (
+              <UserDisplay
+                user={user}
+                key={user.id}
+                status={onlineusers?.some(u => u.id === user.id) ? "online" : "offline"}
+              />
+            ))
+          : onlineusers?.map((user) => (
+              <UserDisplay user={user} key={user.id} status="online" />
+            ))}
+      </div>
     </div>
   );
 };
@@ -134,21 +140,33 @@ export default Sidebar;
 interface userDisplayprops {
   user: userInterface;
   status: "online" | "offline";
+  isCurrentUser?: boolean;
 }
 
-const UserDisplay = ({ user, status }: userDisplayprops) => {
+const UserDisplay = ({ user, status, isCurrentUser }: userDisplayprops) => {
   return (
-    <Link to={`/${user.id}`}>
-      <div className="flex items-center gap-3 my-2 hover:bg-black/10 rounded-md">
-        <Avatar className="h-10 w-10">
-          <AvatarImage src={user.profileImg} />
-        </Avatar>
-        <div className="flex items-center flex-col">
-          <span>{user.username}</span>
+    <Link to={isCurrentUser ? "#" : `/${user.id}`} className={isCurrentUser ? "pointer-events-none" : ""}>
+      <div className={cn(
+        "flex items-center gap-3 p-2 rounded-xl transition-all duration-200 group",
+        isCurrentUser ? "bg-white/5" : "hover:bg-white/10 cursor-pointer hover:shadow-md"
+      )}>
+        <div className="relative">
+          <Avatar className="h-12 w-12 border border-white/10 group-hover:border-primary/50 transition-colors">
+            <AvatarImage src={user.profileImg} className="object-cover" />
+          </Avatar>
+          <div className={cn(
+            "absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-background",
+            status === "online" ? "bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" : "bg-zinc-500"
+          )} />
+        </div>
+        <div className="flex flex-col justify-center">
+          <span className="font-medium text-white/90 group-hover:text-white transition-colors">
+            {user.username} {isCurrentUser && "(You)"}
+          </span>
           <span
             className={cn(
-              "text-xs",
-              status === "online" ? "text-green-600" : "text-muted-foreground"
+              "text-[11px] font-medium tracking-wide uppercase",
+              status === "online" ? "text-green-400" : "text-zinc-500"
             )}
           >
             {status}
