@@ -2,6 +2,8 @@
 
 A modern, real-time chat application frontend built with React, Vite, and TypeScript. It features a premium dark-themed, glassmorphic UI tailored for an optimal user experience.
 
+**Live Demo:** [https://next-chat-ten-theta.vercel.app](https://next-chat-ten-theta.vercel.app)
+
 ## ✨ Features
 
 - **Real-time Messaging**: Instant message delivery and receiving powered by Socket.io.
