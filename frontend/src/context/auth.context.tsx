@@ -37,6 +37,8 @@ const AuthContextProvider = ({ children }: authcontextprops) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<userInterface | null>(null);
   const token = LocalStorage.get("accessToken");
+
+  
   useEffect(() => {
     if (!token) {
       navigate("/auth/login");

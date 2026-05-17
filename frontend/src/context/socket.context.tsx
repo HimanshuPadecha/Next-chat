@@ -46,6 +46,7 @@ export const SocketContextProvider = ({ children }: socketcontextprops) => {
           accessToken: token,
         },
       });
+      
       socket.on("connect", () => {
         setSocket(socket);
         setLoading(false);
