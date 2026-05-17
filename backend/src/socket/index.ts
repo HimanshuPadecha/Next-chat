@@ -57,6 +57,7 @@ export const initSocket = (httpServer: any) => {
 
   io.on("connection", (socket) => {
     console.log("user connected: ", socket.user?.username);
+
     onlineUsers.push({ socketId: socket.id, username: socket.user.username });
     console.log(onlineUsers);
     socket.emit(SOCKET_EVENTS_ENUM.receiveOnlineUsers, onlineUsers);
@@ -71,6 +72,7 @@ export const initSocket = (httpServer: any) => {
       console.log("user disconnected", socket.user.username);
       console.log(onlineUsers);
     });
+    
     socket.on(SOCKET_EVENTS_ENUM.sendOnlineUsers, () => {
       socket.emit(SOCKET_EVENTS_ENUM.receiveOnlineUsers, onlineUsers);
     });

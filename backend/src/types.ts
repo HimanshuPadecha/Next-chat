@@ -42,8 +42,6 @@ export interface onlineuser {
   socketId: string;
 }
 
-
-
 export const sendMessageSchema = z.object({
   receiverId: z.string().uuid(),
   content: z.string(),
