@@ -40,7 +40,7 @@ export const SocketContextProvider = ({ children }: socketcontextprops) => {
     // console.log(import.meta.env.SOCKET_URL);
 
     const connectSocket = async () => {
-      const socket: Socket = io("http://localhost:3000", {
+      const socket: Socket = io("https://next-chat-qlmt.onrender.com", {
         withCredentials: true,
         auth: {
           accessToken: token,

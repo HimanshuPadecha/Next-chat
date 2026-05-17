@@ -13,7 +13,7 @@ let onlineUsers: onlineuser[] = [];
 export const initSocket = (httpServer: any) => {
   const io = new Server(httpServer, {
     cors: {
-      origin: "http://localhost:5173",
+      origin: process.env.CORS_ORIGIN,
       credentials: true,
     },
   });
