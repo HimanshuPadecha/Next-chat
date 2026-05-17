@@ -18,7 +18,7 @@ const Chat = ({ users }: chatprops) => {
         <>
           <ChatHeader user={user} />
           <Outlet />
-          <MessageInput receiverId={id} />
+          <MessageInput receiverId={id as string} />
         </>
       ) : (
         <div className="flex-1 flex flex-col items-center justify-center text-white/40">

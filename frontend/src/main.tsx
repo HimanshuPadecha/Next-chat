@@ -46,8 +46,7 @@ createRoot(document.getElementById("root")!).render(
     <ToastContainer 
       theme="dark"
       position="bottom-right"
-      toastClassName="bg-black/60 backdrop-blur-xl shadow-2xl rounded-xl border border-white/10 mb-4 mx-4"
-      bodyClassName="text-white/90 text-sm font-medium tracking-wide"
+      toastClassName="bg-black/60 backdrop-blur-xl shadow-2xl rounded-xl border border-white/10 mb-4 mx-4 text-white/90 text-sm font-medium tracking-wide"
       hideProgressBar
     />
   </>
